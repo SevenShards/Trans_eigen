@@ -86,7 +86,7 @@ int Matrix_To_Image() {
 
     namedWindow("output", CV_WINDOW_AUTOSIZE);
     imshow("output", dst);
-
+    imwrite("../resultframe/result-01.jpeg",dst);
     waitKey(0);
     return 0;
 }
@@ -166,7 +166,7 @@ int DistilingProgram(MatrixXd pixelChannelMatrix, string channelName, int height
             int delta = max - min;
             MatrixXd resultMatrix = m_temp;
             if (delta <= 2) {
-                count_no_reconstruct ++;
+                count_no_reconstruct++;
                 if (horizontal_flag) {
                     restore_pixel_matrix_horizontal_temp = m_temp;
                     horizontal_flag = false;
@@ -185,7 +185,7 @@ int DistilingProgram(MatrixXd pixelChannelMatrix, string channelName, int height
                     MatrixXd b_reconstructMatrix = reconstructMatrix(channelName, loopNumber);
                     count_reconstruct++;
                     //cout << "b_reconstructMatrix.rows(): " << b_reconstructMatrix.rows()
-                     //    << "   b_reconstructMatrix.cols():" << b_reconstructMatrix.cols() << endl;
+                    //    << "   b_reconstructMatrix.cols():" << b_reconstructMatrix.cols() << endl;
 
                     if (horizontal_flag) {
                         restore_pixel_matrix_horizontal_temp = b_reconstructMatrix;
@@ -218,14 +218,18 @@ int DistilingProgram(MatrixXd pixelChannelMatrix, string channelName, int height
         //cout << "count_length" << count_length << endl;
 
     }
-    cout << "count_length" << count_length << endl;
+    cout << "count_length: " << count_length << endl;
+    cout << channelName + "_restore" << endl;
 
     map<string, MatrixXd>::iterator it_channel;
     it_channel = channelbuffer.find(channelName + "_restore");
-    if (it_channel != basebuffer.end()) {
+
+    if (it_channel != channelbuffer.end()) {
         channelbuffer.erase(it_channel);
     }
+
     channelbuffer.insert({channelName + "_restore", restore_pixel_matrix});
+
 
     return 0;
 }
